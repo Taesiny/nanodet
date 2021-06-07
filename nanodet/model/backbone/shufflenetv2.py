@@ -171,12 +171,12 @@ class ShuffleNetV2(nn.Module):
                 nn.init.normal_(m.weight, 0, 0.01)
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
-        if pretrain:
-            url = model_urls['shufflenetv2_{}'.format(self.model_size)]
-            if url is not None:
-                pretrained_state_dict = model_zoo.load_url(url)
-                print('=> loading pretrained model {}'.format(url))
-                self.load_state_dict(pretrained_state_dict, strict=False)
+#        if pretrain:
+#            url = model_urls['shufflenetv2_{}'.format(self.model_size)]
+#            if url is not None:
+#                pretrained_state_dict = model_zoo.load_url(url)
+#                print('=> loading pretrained model {}'.format(url))
+#                self.load_state_dict(pretrained_state_dict, strict=False)
 
 
 if __name__ == "__main__":

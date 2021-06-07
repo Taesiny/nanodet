@@ -58,9 +58,9 @@ class Predictor(object):
         meta = self.pipeline(meta, self.cfg.data.val.input_size)
         meta['img'] = torch.from_numpy(meta['img'].transpose(2, 0, 1)).unsqueeze(0).to(self.device)
         with torch.no_grad():
-            results = self.model.inference(meta)
-        return meta, results
-
+            results,t1,t2 = self.model.inference(meta)
+        return meta, results,t1,t2
+    
     def visualize(self, dets, meta, class_names, score_thres, wait=0):
         time1 = time.time()
         result_img = self.model.head.show_result(meta['raw_img'], dets, class_names, score_thres=score_thres, show=True)
