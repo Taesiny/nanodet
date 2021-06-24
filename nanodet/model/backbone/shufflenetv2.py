@@ -107,7 +107,7 @@ class ShuffleNetV2(nn.Module):
             raise NotImplementedError
 
         # building first layer
-        input_channels = 3
+        input_channels = 1
         output_channels = self._stage_out_channels[0]
         self.conv1 = nn.Sequential(
             nn.Conv2d(input_channels, output_channels, 3, 2, 1, bias=False),
