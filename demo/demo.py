@@ -45,7 +45,7 @@ class Predictor(object):
         img_info = {'id': 0}
         if isinstance(img, str):
             img_info['file_name'] = os.path.basename(img)
-            img = cv2.imread(img)
+            img = cv2.imread(img,cv2.IMREAD_GRAYSCALE)
         else:
             img_info['file_name'] = None
 
@@ -56,7 +56,7 @@ class Predictor(object):
                     raw_img=img,
                     img=img)
         meta = self.pipeline(meta, self.cfg.data.val.input_size)
-        meta['img'] = torch.from_numpy(meta['img'].transpose(2, 0, 1)).unsqueeze(0).to(self.device)
+        meta['img'] = torch.from_numpy(meta['img']).unsqueeze(0).to(self.device)
         with torch.no_grad():
             results,t1,t2 = self.model.inference(meta)
         return meta, results,t1,t2
