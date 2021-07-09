@@ -123,7 +123,7 @@ class NanoDetHead(GFLHead):
             cls_score = gfl_cls(cls_feat)
             bbox_pred = gfl_reg(reg_feat)
 
-        if torch.onnx.is_in_onnx_export():
-            cls_score = torch.sigmoid(cls_score).reshape(1, self.num_classes, -1).permute(0, 2, 1)
-            bbox_pred = bbox_pred.reshape(1, (self.reg_max + 1) * 4, -1).permute(0, 2, 1)
+#         if torch.onnx.is_in_onnx_export():
+#             cls_score = torch.sigmoid(cls_score).reshape(1, self.num_classes, -1).permute(0, 2, 1)
+#             bbox_pred = bbox_pred.reshape(1, (self.reg_max + 1) * 4, -1).permute(0, 2, 1)
         return cls_score, bbox_pred
