@@ -225,6 +225,12 @@ class DepthwiseConvModule(nn.Module):
             elif layer_name == 'act' and self.activation:
                 x = self.act(x)
         return x
+    def qat(self):
+        self.depthwise= nni.ConvBnReLU2d(self.depthwise,self.dwnorm,self.act)
+        self.pointwise= nni.ConvBnReLU2d(self.pointwise,self.dwnorm,self.act)
+        self.dwnorm= torch.nn.Identity()
+        self.pwnorm= torch.nn.Identity()
+        self.act= torch.nn.Identity()
 
 
 class RepVGGConvModule(nn.Module):
