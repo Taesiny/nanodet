@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import warnings
+import torch.nn.intrinsic as nni
 from .init_weights import kaiming_init, normal_init, xavier_init, constant_init
 from .norm import build_norm_layer
 from .activation import act_layers
