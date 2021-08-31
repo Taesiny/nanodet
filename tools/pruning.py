@@ -43,11 +43,15 @@ def parse_args():
 
 def compute_amount(epoch):
     # the sum of all returned values need to be smaller than 1
-    if epoch == 10:
+    if epoch == 1:
         return 0.5
 
-    elif epoch == 50:
-        return 0.25
+    elif epoch == 20:
+        return 0.5
+
+
+
+
 
 
 
@@ -93,13 +97,23 @@ def main(args):
 
     model_resume_path = os.path.join(cfg.save_dir, 'model_last.ckpt') if 'resume' in cfg.schedule else None
     # print(task.model.backbone.stage4[0].branch1[1])
-    parameters_to_prune = [(task.model.backbone.stage4[0].branch1[0], "weight"), 
-                  (task.model.backbone.stage4[0].branch1[2], "weight"),
-                  (task.model.backbone.stage4[0].branch2[0], "weight"),
-                  (task.model.backbone.stage4[0].branch2[3], "weight"),
-                  (task.model.backbone.stage4[0].branch2[5], "weight")]
-    for para in parameters_to_prune:
-      print(list(para[0].named_parameters())[0][1].shape)
+    # parameters_to_prune = [(task.model.backbone.stage4[0].branch1[0], "weight"), 
+    #               (task.model.backbone.stage4[0].branch1[2], "weight"),
+    #               (task.model.backbone.stage4[0].branch2[0], "weight"),
+    #               (task.model.backbone.stage4[0].branch2[3], "weight"),
+    #               (task.model.backbone.stage4[0].branch2[5], "weight"),
+    #               (task.model.backbone.stage4[1].branch2[0], "weight"),
+    #               (task.model.backbone.stage4[1].branch2[3], "weight"),
+    #               (task.model.backbone.stage4[1].branch2[5], "weight"),
+    #               (task.model.backbone.stage4[2].branch2[0], "weight"),
+    #               (task.model.backbone.stage4[2].branch2[3], "weight"),
+    #               (task.model.backbone.stage4[2].branch2[5], "weight"),
+    #               (task.model.backbone.stage4[3].branch2[0], "weight"),
+    #               (task.model.backbone.stage4[3].branch2[3], "weight"),
+    #               (task.model.backbone.stage4[3].branch2[5], "weight")]
+    parameters_to_prune=eval(cfg.parameters_to_prune)
+    # for para in cfg.parameters_to_prune:
+    #   print(list(eval(para)[0].named_parameters())[0][1].shape)
     trainer = pl.Trainer(default_root_dir=cfg.save_dir,
                          max_epochs=cfg.schedule.total_epochs,
                          gpus=cfg.device.gpu_ids,
@@ -115,7 +129,7 @@ def main(args):
                                         amount=compute_amount,
                                         make_pruning_permanent= True,
                                         pruning_dim = 0,
-                                        pruning_norm = 2,
+                                        pruning_norm = 1,
                                         use_global_unstructured = False)
                                     ]  # disable tqdm bar
                          )
