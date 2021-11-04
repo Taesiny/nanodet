@@ -1,0 +1,5 @@
+Parameter/Model weight: 0.94M/3.74MB
+AP/AR@IoU=0.50:0.95: 82.3/ 84.0
+inference time(ms):
+	forward time: 8.33
+	decode time: 3.48
