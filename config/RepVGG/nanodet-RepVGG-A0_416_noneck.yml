@@ -11,7 +11,7 @@ model:
       last_channel: 512
       deploy: False
     fpn:
-      name: CONV
+      name: NONECK
       in_channels: [96, 192, 512]
       out_channels: 96
       start_level: 0
