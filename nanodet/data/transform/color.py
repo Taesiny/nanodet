@@ -233,17 +233,17 @@ def _normalize(img, mean, std):
 
 
 def color_aug_and_norm(meta, kwargs):
-    if kwargs['histogramm equalization']:
+    if kwargs['histogramm_equalization']:
         meta['img'] = hist_eq(meta['img'])
-    if kwargs['homomorphic filter']:
+    if kwargs['homomorphic_filter']:
         homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
         meta['img'] = homo_filter.filter(I=meta['img'],filter_params=[100,2])
     if kwargs['clahe']:
         meta['img'] = clahe(meta['img'])
-    if 'gamma correction' in kwargs:
-        meta['img'] = gamma_cor(meta['img'],kwargs['gamma correction'])
+    if 'gamma_correction' in kwargs:
+        meta['img'] = gamma_cor(meta['img'],kwargs['gamma_correction'])
     if 'sharpning' in kwargs:
-        meta['img'] = gamma_cor(meta['img'],kwargs['sharpning'])
+        meta['img'] = sharpning(meta['img'],kwargs['sharpning'])
     if kwargs['dft']:
         meta['img'] = dft2d(meta['img'])
     img = meta['img'].astype(np.float32) / 255
@@ -258,9 +258,9 @@ def color_aug_and_norm(meta, kwargs):
         img=(img1+img2)/2
     if 'blur' in kwargs:
         img = blur(img,kwargs['blur'])
-    if kwargs['contrast streching']:
+    if kwargs['contrast_streching']:
         img = con_str(img)
-    if kwargs['log correction']:
+    if kwargs['log_correction']:
         img = log_cor(img)
 
 
@@ -280,8 +280,8 @@ def color_aug_and_norm(meta, kwargs):
     return meta
 
 
-test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
-test_image=test_image.astype(np.float32) / 255
+# test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
+# test_image=test_image.astype(np.float32) / 255
 
 #test_image = random_brightness(test_image,0.4)
 #test_image1= binarize(test_image,123)
@@ -292,9 +292,9 @@ test_image=test_image.astype(np.float32) / 255
 #cv2.imshow('test_image2',test_image2)
 #test_image=(test_image1+test_image2)/2
 #test_image = con_str(test_image)
-print(test_image)
-print('max',test_image.max(),'min',test_image.min())
-cv2.imshow('test_image',test_image)
+# print(test_image)
+# print('max',test_image.max(),'min',test_image.min())
+# cv2.imshow('test_image',test_image)
 
 #homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
 #img_filtered = homo_filter.filter(I=test_image,filter_params=[100,2])
@@ -308,55 +308,54 @@ cv2.imshow('test_image',test_image)
 
 
 # PCA
-matrix_test = None
-for image in os.listdir('C:/Users/zm3171/Desktop/test/211102/data'):
-    if image.endswith('.png'):
-        imgraw = cv2.imread(os.path.join('C:/Users/zm3171/Desktop/test/211102/data', image), 0)
-        imgvector = imgraw.reshape(72*1024)
-        try:
-            matrix_test = np.vstack((matrix_test, imgvector))
-        except:
-            matrix_test = imgvector
+# matrix_test = None
+# for image in os.listdir('C:/Users/zm3171/Desktop/test/211102/data'):
+#     if image.endswith('.png'):
+#         imgraw = cv2.imread(os.path.join('C:/Users/zm3171/Desktop/test/211102/data', image), 0)
+#         imgvector = imgraw.reshape(72*1024)
+#         try:
+#             matrix_test = np.vstack((matrix_test, imgvector))
+#         except:
+#             matrix_test = imgvector
 
 
-mean, eigenvectors = cv2.PCACompute(matrix_test, mean=None)
+# mean, eigenvectors = cv2.PCACompute(matrix_test, mean=None)
 
-V = eigenvectors[:1000]
-temp=np.zeros((len(matrix_test),len(V)))
-for i in range(len(matrix_test)):
-    temp[i] = np.dot(V, matrix_test[i] - mean[0])
-after_trans=np.matmul(temp,V)+mean
+# V = eigenvectors[:1000]
+# temp=np.zeros((len(matrix_test),len(V)))
+# for i in range(len(matrix_test)):
+#     temp[i] = np.dot(V, matrix_test[i] - mean[0])
+# after_trans=np.matmul(temp,V)+mean
 
-img1=matrix_test[0].reshape(72,1024) /255.0
-img2=after_trans[0].reshape(72,1024)/255.0
-cv2.imshow('1',img1)
-cv2.imshow('2',img2)
+# img1=matrix_test[0].reshape(72,1024) /255.0
+# img2=after_trans[0].reshape(72,1024)/255.0
+# cv2.imshow('1',img1)
+# cv2.imshow('2',img2)
 
 #ZCA
-def zca_whiten(X):
-    """
-    Applies ZCA whitening to the data (X)
-    http://xcorr.net/2011/05/27/whiten-a-matrix-matlab-code/
+# def zca_whiten(X):
+#     """
+#     Applies ZCA whitening to the data (X)
+#     http://xcorr.net/2011/05/27/whiten-a-matrix-matlab-code/
 
-    X: numpy 2d array
-        input data, rows are data points, columns are features
+#     X: numpy 2d array
+#         input data, rows are data points, columns are features
 
-    Returns: ZCA whitened 2d array
-    """
-    assert(X.ndim == 2)
-    EPS = 10e-5
+#     Returns: ZCA whitened 2d array
+#     """
+#     assert(X.ndim == 2)
+#     EPS = 10e-5
 
-    #   covariance matrix
-    cov = np.dot(X.T, X)
-    #   d = (lambda1, lambda2, ..., lambdaN)
-    d, E = np.linalg.eigh(cov)
-    #   D = diag(d) ^ (-1/2)
-    D = np.diag(1. / np.sqrt(d + EPS))
-    #   W_zca = E * D * E.T
-    W = np.dot(np.dot(E, D), E.T)
+#     #   covariance matrix
+#     cov = np.dot(X.T, X)
+#     #   d = (lambda1, lambda2, ..., lambdaN)
+#     d, E = np.linalg.eigh(cov)
+#     #   D = diag(d) ^ (-1/2)
+#     D = np.diag(1. / np.sqrt(d + EPS))
+#     #   W_zca = E * D * E.T
+#     W = np.dot(np.dot(E, D), E.T)
 
-    X_white = np.dot(X, W)
+#     X_white = np.dot(X, W)
 
-    return X_white
+#     return X_white
 
-zca_image= zca_whiten(matrix_test)

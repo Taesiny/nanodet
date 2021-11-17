@@ -1,5 +1,5 @@
 #Config File example
-save_dir: /content/drive/MyDrive/workspace/synthdata/ELG4960_Out/2/nanodet-m_test
+save_dir: /content/drive/MyDrive/workspace/synthdata/ELG4960_Out/2/vis_preprocessing_test
 model:
   arch:
     name: OneStageDetector
@@ -55,13 +55,20 @@ data:
       shear: 0
       translate: 0.2
       flip: 0.5
-#      brightness: 0.2
-#      contrast: [0.8, 1.2]
-#      saturation: [0.8, 1.2]
-      laplacian: True
-      binarization_th: [60,123]
-      morph: True
-      blur: normal 
+      
+      histogramm_equalization: False
+      homomorphic_filter: False
+      clahe: False
+      contrast_streching: False
+      log_correction: False
+      dft: False
+      laplacian: False
+#      gamma_correction: 0.5
+#      sharpning: 2
+#      blur: bilateral
+#      binarization_th: [60,123]
+      morph: False
+
       normalize: [[127.0], [128.0]]
   val:
     name: coco
