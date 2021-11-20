@@ -109,9 +109,10 @@ def sharpning(img,kernel=1):
 
 def dft2d(img):
     img=img.astype(np.float32)
-    dft=cv2.dft(img, flags = cv2.DFT_COMPLEX_OUTPUT)
-    dft_shift = np.fft.fftshift(dft) # Shift the zero-frequency component to the center of the spectrum.
-    magnitude_spectrum = 20*np.log(cv2.magnitude(dft_shift[:,:,0],dft_shift[:,:,1])) 
+    f = np.fft.fft2(img)
+    fshift = np.fft.fftshift(f)
+    print(fshift)
+    magnitude_spectrum = 20*np.log(np.abs(fshift)+1e-8).astype(np.uint8)
     return magnitude_spectrum
 def binarize(img,th):
     img = cv2.threshold(img, th/255, 1, cv2.THRESH_BINARY)[1]
@@ -280,28 +281,34 @@ def color_aug_and_norm(meta, kwargs):
     return meta
 
 
-# test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
-# test_image=test_image.astype(np.float32) / 255
+test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
+test_image=sharpning(test_image,2)
+#test_image=gamma_cor(test_image,0.7)
+#homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
+#test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
+test_image=test_image.astype(np.float32) / 255
 
 #test_image = random_brightness(test_image,0.4)
-#test_image1= binarize(test_image,123)
-##test_image1= morph(test_image1)
-#test_image2= binarize(test_image,60)
-##test_image2= morph(test_image2)
+test_image1= binarize(test_image,123)
+#test_image1= morph(test_image1)
+test_image2= binarize(test_image,60)
+#test_image2= morph(test_image2)
 #cv2.imshow('test_image1',test_image1)
 #cv2.imshow('test_image2',test_image2)
-#test_image=(test_image1+test_image2)/2
-#test_image = con_str(test_image)
+test_image=(test_image1+test_image2)/2
+#test_image = laplacian(test_image)
+#test_image = blur(test_image,'bilateral')
 # print(test_image)
 # print('max',test_image.max(),'min',test_image.min())
-# cv2.imshow('test_image',test_image)
-
-#homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
-#img_filtered = homo_filter.filter(I=test_image,filter_params=[100,2])
+cv2.imshow('test_image',test_image)
+cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'sharpning1+bin.png'), test_image*255)
 
 
-#test_image=gamma_cor(test_image,gamma=0.5)
-#cv2.imshow('test_image1',test_image)
+#cv2.imshow('test_image',test_image)
+#cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'log_cor.png'), test_image*255)
+
+#test_image1=dft2d(test_image)
+#cv2.imshow('test_image1',test_image1)
 #cv2.imshow('test_image2',img_filtered)
 #cv2.imshow('test_image2',test_image1-test_image)
 
