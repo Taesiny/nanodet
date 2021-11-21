@@ -2,6 +2,7 @@ import random
 import numpy as np
 import cv2
 import math
+import os
 
 def get_flip_matrix(prob=0.5):
     F = np.eye(3)
@@ -205,10 +206,17 @@ def warp_boxes(boxes, M, width, height):
 #         xy[:, [1, 3]] = xy[:, [1, 3]].clip(0, height)
 #         return xy
 
+shape=(512,36)
+test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
+A=get_resize_matrix((1024,72),shape,True)
+#img=cv2.warpPerspective(test_image, A, dsize=tuple(shape))
+img=test_image[:,896:1024]
+cv2.imshow('1',test_image)
+cv2.imshow('2',img)
 
-
-
-
+#cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'ori.png'), test_image)
+cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'patch8.png'), img)
+#
 
 
 
