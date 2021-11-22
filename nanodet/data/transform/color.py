@@ -283,9 +283,10 @@ def color_aug_and_norm(meta, kwargs):
 
 test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
 #test_image=sharpning(test_image,1)
-homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
-test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
-test_image=gamma_cor(test_image,0.7)
+#homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
+#test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
+cv2.imshow('test_image1',test_image)
+test_image=gamma_cor(test_image,1)
 
 #test_image=sharpning(test_image,1)
 test_image=test_image.astype(np.float32) / 255
