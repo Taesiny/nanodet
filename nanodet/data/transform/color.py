@@ -281,15 +281,15 @@ def color_aug_and_norm(meta, kwargs):
     return meta
 
 
-test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
+#test_image = cv2.imread('test_image.png', cv2.IMREAD_GRAYSCALE)
 #test_image=sharpning(test_image,1)
 #homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
 #test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
-cv2.imshow('test_image1',test_image)
-test_image=gamma_cor(test_image,1)
+#cv2.imshow('test_image1',test_image)
+#test_image=gamma_cor(test_image,1.5)
 
 #test_image=sharpning(test_image,1)
-test_image=test_image.astype(np.float32) / 255
+#test_image=test_image.astype(np.float32) / 255
 
 #test_image = random_brightness(test_image,0.4)
 #test_image1= binarize(test_image,123)
@@ -303,8 +303,8 @@ test_image=test_image.astype(np.float32) / 255
 #test_image = blur(test_image,'bilateral')
 # print(test_image)
 # print('max',test_image.max(),'min',test_image.min())
-cv2.imshow('test_image',test_image)
-#cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'homo+sharpning1.png'), test_image*255)
+#cv2.imshow('test_image',test_image)
+#cv2.imwrite(os.path.join(r'D:\Workspace\nanodet\nanodet\data\transform' , 'gamma15.png'), test_image*255)
 
 
 #cv2.imshow('test_image',test_image)
