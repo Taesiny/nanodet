@@ -1,5 +1,5 @@
 #Config File example
-save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/preprocessing_test/sharpning1_homo_gamma7
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/preprocessing_test/sharpning1_homo_gamma8
 model:
   arch:
     name: OneStageDetector
@@ -63,7 +63,7 @@ data:
       log_correction: False
       dft: False
       laplacian: False
-      gamma_correction: 0.7
+      gamma_correction: 0.8
       sharpning: 1
 #      blur: bilateral
 #      binarization_th: [60,123]
@@ -84,7 +84,7 @@ data:
       log_correction: False
       dft: False
       laplacian: False
-      gamma_correction: 0.7
+      gamma_correction: 0.8
       sharpning: 1
 #      blur: bilateral
 #      binarization_th: [60,123]
