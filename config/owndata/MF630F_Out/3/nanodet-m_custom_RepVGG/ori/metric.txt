@@ -1,0 +1,5 @@
+Parameter/Model weight: M/MB
+AP@IoU=0.50:0.95: /(noneck)
+inference time(ms):
+	forward time:
+	decode time:

@@ -1,0 +1,5 @@
+Parameter/Model weight: 
+AP@IoU=0.50:0.95(1 2 3 12 13 23): 0.677 0.509 0.597 0.702 0.695 0.604 
+inference time(ms):
+	forward time:8.79
+	decode time:3.63
