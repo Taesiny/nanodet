@@ -247,7 +247,7 @@ def color_aug_and_norm(meta, kwargs):
 #        meta['img'] = sharpning(meta['img'],kwargs['sharpning'])
 #    if kwargs['dft']:
 #        meta['img'] = dft2d(meta['img'])
-#    img = meta['img'].astype(np.float32) / 255
+    img = meta['img'].astype(np.float32) / 255
 #    if kwargs['laplacian']:
 #        img=laplacian(img)
 #    if 'binarization_th' in kwargs:
