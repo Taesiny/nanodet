@@ -234,35 +234,35 @@ def _normalize(img, mean, std):
 
 
 def color_aug_and_norm(meta, kwargs):
-    if kwargs['histogramm_equalization']:
-        meta['img'] = hist_eq(meta['img'])
-    if kwargs['homomorphic_filter']:
-        homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
-        meta['img'] = homo_filter.filter(I=meta['img'],filter_params=[100,2])
-    if kwargs['clahe']:
-        meta['img'] = clahe(meta['img'])
-    if 'gamma_correction' in kwargs:
-        meta['img'] = gamma_cor(meta['img'],kwargs['gamma_correction'])
-    if 'sharpning' in kwargs:
-        meta['img'] = sharpning(meta['img'],kwargs['sharpning'])
-    if kwargs['dft']:
-        meta['img'] = dft2d(meta['img'])
-    img = meta['img'].astype(np.float32) / 255
-    if kwargs['laplacian']:
-        img=laplacian(img)
-    if 'binarization_th' in kwargs:
-        img1 = binarize(img,kwargs['binarization_th'][0])
-        img2 = binarize(img,kwargs['binarization_th'][1])
-        if kwargs['morph']:
-            img1=morph(img1)
-            img2=morph(img2)
-        img=(img1+img2)/2
-    if 'blur' in kwargs:
-        img = blur(img,kwargs['blur'])
-    if kwargs['contrast_streching']:
-        img = con_str(img)
-    if kwargs['log_correction']:
-        img = log_cor(img)
+#    if kwargs['histogramm_equalization']:
+#        meta['img'] = hist_eq(meta['img'])
+#    if kwargs['homomorphic_filter']:
+#        homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
+#        meta['img'] = homo_filter.filter(I=meta['img'],filter_params=[100,2])
+#    if kwargs['clahe']:
+#        meta['img'] = clahe(meta['img'])
+#    if 'gamma_correction' in kwargs:
+#        meta['img'] = gamma_cor(meta['img'],kwargs['gamma_correction'])
+#    if 'sharpning' in kwargs:
+#        meta['img'] = sharpning(meta['img'],kwargs['sharpning'])
+#    if kwargs['dft']:
+#        meta['img'] = dft2d(meta['img'])
+#    img = meta['img'].astype(np.float32) / 255
+#    if kwargs['laplacian']:
+#        img=laplacian(img)
+#    if 'binarization_th' in kwargs:
+#        img1 = binarize(img,kwargs['binarization_th'][0])
+#        img2 = binarize(img,kwargs['binarization_th'][1])
+#        if kwargs['morph']:
+#            img1=morph(img1)
+#            img2=morph(img2)
+#        img=(img1+img2)/2
+#    if 'blur' in kwargs:
+#        img = blur(img,kwargs['blur'])
+#    if kwargs['contrast_streching']:
+#        img = con_str(img)
+#    if kwargs['log_correction']:
+#        img = log_cor(img)
 
 
         
