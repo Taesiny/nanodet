@@ -1,11 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
+
 import sys
 sys.path.insert(0,'..')
 
-
 from module.activation import act_layers
+from module.conv import AutoAug
+
 
 model_urls = {
     'shufflenetv2_0.5x': 'https://download.pytorch.org/models/shufflenetv2_x0.5-f707e7126e.pth',
@@ -83,7 +85,7 @@ class ShuffleV2Block(nn.Module):
         return out
 
 
-class ShuffleNetV2(nn.Module):
+class ShuffleNetV2_preprocessing(nn.Module):
     def __init__(self,
                  model_size='1.5x',
                  out_stages=(2, 3, 4),
@@ -91,7 +93,7 @@ class ShuffleNetV2(nn.Module):
                  kernal_size=3,
                  activation='ReLU',
                  pretrain=True):
-        super(ShuffleNetV2, self).__init__()
+        super(ShuffleNetV2_preprocessing, self).__init__()
         print('model size is ', model_size)
 
         self.stage_repeats = [4, 8, 4]
@@ -110,6 +112,8 @@ class ShuffleNetV2(nn.Module):
             self._stage_out_channels = [24, 244, 488, 976, 2048]
         else:
             raise NotImplementedError
+            
+        self.pre_stage=AutoAug()
 
         # building first layer
         input_channels = 1
@@ -142,6 +146,7 @@ class ShuffleNetV2(nn.Module):
         self._initialize_weights(pretrain)
 
     def forward(self, x):
+        x = self.pre_stage(x)
         x = self.conv1(x)
         x = self.maxpool(x)
         output = []
@@ -149,7 +154,6 @@ class ShuffleNetV2(nn.Module):
             stage = getattr(self, 'stage{}'.format(i))
             x = stage(x)
             if i in self.out_stages:
-                print(x.requires_grad)
                 output.append(x)
         return tuple(output)
 
@@ -186,7 +190,7 @@ class ShuffleNetV2(nn.Module):
 
 
 if __name__ == "__main__":
-    model = ShuffleNetV2(model_size='1.0x', )
+    model = ShuffleNetV2_preprocessing(model_size='1.0x', )
 #    print(model)
     test_data = torch.rand(5, 1, 320, 320)
     test_outputs = model(test_data)

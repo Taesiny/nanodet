@@ -2,6 +2,7 @@ import copy
 from .resnet import ResNet
 from .ghostnet import GhostNet
 from .shufflenetv2 import ShuffleNetV2
+from .shufflenetv2_preprocessing import ShuffleNetV2_preprocessing
 from .mobilenetv2 import MobileNetV2
 from .efficientnet_lite import EfficientNetLite
 from .custom_csp import CustomCspNet
@@ -15,6 +16,8 @@ def build_backbone(cfg):
         return ResNet(**backbone_cfg)
     elif name == 'ShuffleNetV2':
         return ShuffleNetV2(**backbone_cfg)
+    elif name == 'ShuffleNetV2_preprocessing':
+        return ShuffleNetV2_preprocessing(**backbone_cfg)
     elif name == 'GhostNet':
         return GhostNet(**backbone_cfg)
     elif name == 'MobileNetV2':

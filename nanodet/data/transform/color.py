@@ -281,7 +281,7 @@ def color_aug_and_norm(meta, kwargs):
     return meta
 
 
-#test_image = cv2.imread('p3_000134_raw.png', cv2.IMREAD_GRAYSCALE)
+#test_image = cv2.imread('Ori_image.png', cv2.IMREAD_GRAYSCALE)
 #test_image=hist_eq(test_image)
 #homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
 #test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
@@ -301,7 +301,8 @@ def color_aug_and_norm(meta, kwargs):
 #cv2.imshow('test_image2',test_image2)
 #test_image=(test_image1+test_image2)/2
 #test_image = laplacian(test_image)
-#test_image = blur(test_image,'bilateral')
+#print(test_image.shape)
+#test_image = blur(test_image,'normal')
 # print(test_image)
 # print('max',test_image.max(),'min',test_image.min())
 #cv2.imshow('test_image',test_image)

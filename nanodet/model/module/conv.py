@@ -10,7 +10,8 @@ import torch.nn.intrinsic as nni
 from .init_weights import kaiming_init, normal_init, xavier_init, constant_init
 from .norm import build_norm_layer
 from .activation import act_layers
-
+import cv2
+import torchvision.transforms as T
 
 class ConvModule(nn.Module):
     """A conv block that contains conv/norm/activation layers.
@@ -348,3 +349,41 @@ class RepVGGConvModule(nn.Module):
     def repvgg_convert(self):
         kernel, bias = self.get_equivalent_kernel_bias()
         return kernel.detach().cpu().numpy(), bias.detach().cpu().numpy(),
+
+
+class AutoAug(nn.Module):
+    def __init__(self):
+        super(AutoAug, self).__init__()
+        self.mean = torch.from_numpy( np.array([127.0], dtype=np.float32).reshape(1, 1, 1) / 255)
+        self.std =  torch.from_numpy(np.array([128.0], dtype=np.float32).reshape(1, 1, 1) / 255)
+        
+        self.a1 = torch.nn.Parameter(torch.randn(()))
+        self.a2 = torch.nn.Parameter(torch.randn(()))
+        
+        self.b0 = torch.nn.Parameter(torch.randn(()))
+        self.b1 = torch.nn.Parameter(torch.randn(()))
+        self.b2 = torch.nn.Parameter(torch.randn(()))
+        
+        
+    def blur(self,x):
+        blur_op=   T.GaussianBlur(kernel_size=(5, 5))
+        out= blur_op(x)
+        return out
+    
+    def sharpening(self,x):
+        sharpening_op=  T.RandomAdjustSharpness(sharpness_factor=2, p=1)
+        out=sharpening_op(x)
+        return out
+    
+    def forward(self, x):
+        x = x*self.std+self.mean
+        out1= self.blur(x)
+        out2= self.sharpening(x)
+       
+        x = self.b0*x+self.b1*(self.a1*x+(1-self.a1)*out1)+self.b2*(self.a2*x+(1-self.a2)*out2)
+        x= (x-self.mean)/self.std
+        
+        return x
+        
+
+
