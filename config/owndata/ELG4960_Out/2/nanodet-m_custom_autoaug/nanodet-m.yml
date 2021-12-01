@@ -82,17 +82,17 @@ schedule:
     name: linear
     steps: 3000
     ratio: 0.01
-  total_epochs: 20
+  total_epochs: 500
   lr_schedule:
     name: MultiStepLR
     milestones: [300,400,450,475]
     gamma: 0.1
-  val_intervals: 5
+  val_intervals: 20
 evaluator:
   name: CocoDetectionEvaluator
   save_key: mAP
 
 log:
-  interval: 5
+  interval: 20
 
 class_names: ['defect']
