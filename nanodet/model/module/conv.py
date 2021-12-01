@@ -11,7 +11,7 @@ from .init_weights import kaiming_init, normal_init, xavier_init, constant_init
 from .norm import build_norm_layer
 from .activation import act_layers
 import cv2
-import torchvision.transforms as T
+import torchvision.transforms.functional as T
 
 class ConvModule(nn.Module):
     """A conv block that contains conv/norm/activation layers.
@@ -359,28 +359,83 @@ class AutoAug(nn.Module):
         
         self.a1 = torch.nn.Parameter(torch.randn(()))
         self.a2 = torch.nn.Parameter(torch.randn(()))
+        self.a3 = torch.nn.Parameter(torch.randn(()))
+        self.a4 = torch.nn.Parameter(torch.randn(()))
+        self.a5 = torch.nn.Parameter(torch.randn(()))
+        self.a6 = torch.nn.Parameter(torch.randn(()))
+        self.a7 = torch.nn.Parameter(torch.randn(()))
+        self.a8 = torch.nn.Parameter(torch.randn(()))
+        self.a9 = torch.nn.Parameter(torch.randn(()))
+        self.a10 = torch.nn.Parameter(torch.randn(()))
+        self.a11 = torch.nn.Parameter(torch.randn(()))
+        self.a12 = torch.nn.Parameter(torch.randn(()))
         
         self.b0 = torch.nn.Parameter(torch.randn(()))
         self.b1 = torch.nn.Parameter(torch.randn(()))
         self.b2 = torch.nn.Parameter(torch.randn(()))
+        self.b3 = torch.nn.Parameter(torch.randn(()))
+        self.b4 = torch.nn.Parameter(torch.randn(()))
+        self.b5 = torch.nn.Parameter(torch.randn(()))
+        self.b6 = torch.nn.Parameter(torch.randn(()))
+        self.b7 = torch.nn.Parameter(torch.randn(()))
+        self.b8 = torch.nn.Parameter(torch.randn(()))
+        self.b9 = torch.nn.Parameter(torch.randn(()))
+        self.b10 = torch.nn.Parameter(torch.randn(()))
+        self.b11 = torch.nn.Parameter(torch.randn(()))
+        self.b12 = torch.nn.Parameter(torch.randn(()))
+
         
         
     def blur(self,x):
-        blur_op=   T.GaussianBlur(kernel_size=(5, 5))
-        out= blur_op(x)
+        out= T.gaussian_blur(x,kernel_size=(5, 5))
         return out
     
-    def sharpening(self,x):
-        sharpening_op=  T.RandomAdjustSharpness(sharpness_factor=2, p=1)
-        out=sharpening_op(x)
+    def sharpening(self,x,factor=2):
+        out= T.adjust_sharpness(x,sharpness_factor=factor)
         return out
+    
+    def histo_equ(self,x):
+        out= T.equalize(x.to(dtype=torch.uint8))
+        return out.to(dtype=torch.float32)
+    
+    def adj_brightness(self,x,factor=0.1):
+        out= T.adjust_brightness(x,brightness_factor=factor)
+        return out
+  
+    def adj_contrast(self,x,factor=0):
+        out= T.adjust_contrast(x,contrast_factor=factor)
+        return out
+
+    def auto_contrast(self,x):
+        out= T.autocontrast(x)
+        return out
+
+    def adj_gamma(self,x,factor=0.1):
+        out= T.adjust_gamma(x,gamma=factor)
+        return out
+    
+    def log_cor(self,x):
+        c = 255 / torch.log(1 + torch.max(x))
+        out = c * (torch.log(x + 1))
+        return out
+
     
     def forward(self, x):
         x = x*self.std+self.mean
         out1= self.blur(x)
-        out2= self.sharpening(x)
-       
-        x = self.b0*x+self.b1*(self.a1*x+(1-self.a1)*out1)+self.b2*(self.a2*x+(1-self.a2)*out2)
+        out2= self.sharpening(x,factor=0)
+        out3= self.sharpening(x,factor=2)
+        out4= self.histo_equ(x)
+        out5= self.adj_brightness(x,factor=0.1)
+        out6= self.adj_brightness(x,factor=2)
+        out7= self.adj_contrast(x,factor=0.1)
+        out8= self.adj_contrast(x,factor=2)
+        out9= self.auto_contrast(x)
+        out10= self.adj_gamma(x,factor=0.1)
+        out11= self.adj_gamma(x,factor=2)
+        out12= self.log_cor(x)
+  
+        x = self.b0*x+self.b1*(self.a1*x+(1-self.a1)*out1)+self.b2*(self.a2*x+(1-self.a2)*out2)+self.b3*(self.a3*x+(1-self.a3)*out3)+self.b4*(self.a4*x+(1-self.a4)*out4)+self.b5*(self.a5*x+(1-self.a5)*out5)+self.b6*(self.a6*x+(1-self.a6)*out6)+self.b7*(self.a7*x+(1-self.a7)*out7)+self.b8*(self.a8*x+(1-self.a8)*out8)+self.b9*(self.a9*x+(1-self.a9)*out9)+self.b10*(self.a10*x+(1-self.a10)*out10)+self.b11*(self.a11*x+(1-self.a11)*out11)+self.b12*(self.a12*x+(1-self.a12)*out12)
         x= (x-self.mean)/self.std
         
         return x

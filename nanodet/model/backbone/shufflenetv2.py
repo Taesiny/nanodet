@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
-import sys
-sys.path.insert(0,'..')
+#import sys
+#sys.path.insert(0,'..')
+#from module.activation import act_layers
 
-
-from module.activation import act_layers
+from ..module.activation import act_layers
 
 model_urls = {
     'shufflenetv2_0.5x': 'https://download.pytorch.org/models/shufflenetv2_x0.5-f707e7126e.pth',
@@ -149,7 +149,6 @@ class ShuffleNetV2(nn.Module):
             stage = getattr(self, 'stage{}'.format(i))
             x = stage(x)
             if i in self.out_stages:
-                print(x.requires_grad)
                 output.append(x)
         return tuple(output)
 

@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 
-import sys
-sys.path.insert(0,'..')
+#import sys
+#sys.path.insert(0,'..')
+#
+#from module.activation import act_layers
+#from module.conv import AutoAug
 
-from module.activation import act_layers
-from module.conv import AutoAug
-
+from ..module.activation import act_layers
+from ..module.conv import AutoAug
 
 model_urls = {
     'shufflenetv2_0.5x': 'https://download.pytorch.org/models/shufflenetv2_x0.5-f707e7126e.pth',
