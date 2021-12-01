@@ -354,8 +354,8 @@ class RepVGGConvModule(nn.Module):
 class AutoAug(nn.Module):
     def __init__(self):
         super(AutoAug, self).__init__()
-        self.mean = torch.from_numpy( np.array([127.0], dtype=np.float32).reshape(1, 1, 1) / 255)
-        self.std =  torch.from_numpy(np.array([128.0], dtype=np.float32).reshape(1, 1, 1) / 255)
+        self.mean = torch.from_numpy( np.array([127.0], dtype=np.float32).reshape(1, 1, 1) / 255).cuda()
+        self.std =  torch.from_numpy(np.array([128.0], dtype=np.float32).reshape(1, 1, 1) / 255).cuda()
         
         self.a1 = torch.nn.Parameter(torch.randn(()))
         self.a2 = torch.nn.Parameter(torch.randn(()))
