@@ -1,5 +1,5 @@
 #Config File example
-save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/nanodet-m_test
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/nanodet-m_test1
 model:
   arch:
     name: OneStageDetector
