@@ -1,5 +1,5 @@
 #Config File example
-save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/nanodet-m_reduced_input_size/512_48
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/nanodet-m_reduced_input_size/256_32
 model:
   arch:
     name: OneStageDetector
@@ -44,7 +44,7 @@ data:
     name: coco
     img_path: /content/drive/MyDrive/ELG4960_Out/2/train/
     ann_path: /content/drive/MyDrive/ELG4960_Out/2/train/annotations.json
-    input_size: [512,48] #[w,h]
+    input_size: [256,32] #[w,h]
     keep_ratio: True
     pipeline:
       perspective: 0.0
@@ -62,7 +62,7 @@ data:
     name: coco
     img_path: /content/drive/MyDrive/ELG4960_Out/2/valid/
     ann_path: /content/drive/MyDrive/ELG4960_Out/2/valid/annotations.json
-    input_size: [512,48] #[w,h]
+    input_size: [256,32] #[w,h]
     keep_ratio: True
     pipeline:
       normalize: [[127.0], [128.0]]
