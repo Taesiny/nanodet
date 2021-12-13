@@ -5,6 +5,20 @@ import torch
 from nanodet.util import mkdir, DataParallel, load_model_weight, save_model, MovingAverage, AverageMeter
 
 
+class weightConstraint(object):
+    def __init__(self):
+        pass
+    
+    def __call__(self,module):
+        # if 'pre_stage' in module.name:
+        #     print("Entered")
+        for para in module.parameters():
+          w=para.data
+          w=w.clamp(0.0,1.0)
+          para.data=w
+
+
+
 class Trainer:
     """
     Epoch based trainer
@@ -56,6 +70,10 @@ class Trainer:
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
+            if 'pre_stage' in model.backbone._modules:
+              print('clamp')
+              constraints=weightConstraint()
+              model.backbone._module['pre_stage'].apply(constraints)
         return output, loss, loss_dict
 
     def run_epoch(self, epoch, data_loader, mode):

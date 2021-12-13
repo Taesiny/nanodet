@@ -293,7 +293,7 @@ def color_aug_and_norm(meta, kwargs):
 
 
 #test_image = random_brightness(test_image,0.4)
-#test_image1= binarize(test_image,135)
+#test_image1= binarize(test_image,130)
 #test_image1= morph(test_image1)
 #test_image2= binarize(test_image,100)
 #test_image2= morph(test_image2)
