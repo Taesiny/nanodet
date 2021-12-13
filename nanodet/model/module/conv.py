@@ -435,7 +435,7 @@ class AutoAug(nn.Module):
         out11= self.adj_gamma(x,factor=2)
         out12= self.log_cor(x)
   
-        x = self.b0*x+self.b1*(self.a1*x+(1-self.a1)*out1)+self.b2*(self.a2*x+(1-self.a2)*out2)+self.b3*(self.a3*x+(1-self.a3)*out3)+self.b4*(self.a4*x+(1-self.a4)*out4)+self.b5*(self.a5*x+(1-self.a5)*out5)+self.b6*(self.a6*x+(1-self.a6)*out6)+self.b7*(self.a7*x+(1-self.a7)*out7)+self.b8*(self.a8*x+(1-self.a8)*out8)+self.b9*(self.a9*x+(1-self.a9)*out9)+self.b10*(self.a10*x+(1-self.a10)*out10)+self.b11*(self.a11*x+(1-self.a11)*out11)+self.b12*(self.a12*x+(1-self.a12)*out12)
+        x = torch.sigmoid(self.b0)*x+torch.sigmoid(self.b1)*(torch.sigmoid(self.a1)*x+(1-torch.sigmoid(self.a1))*out1)+torch.sigmoid(self.b2)*(torch.sigmoid(self.a2)*x+(1-torch.sigmoid(self.a2))*out2)+torch.sigmoid(self.b3)*(torch.sigmoid(self.a3)*x+(1-torch.sigmoid(self.a3))*out3)+torch.sigmoid(self.b4)*(torch.sigmoid(self.a4)*x+(1-torch.sigmoid(self.a4))*out4)+torch.sigmoid(self.b5)*(torch.sigmoid(self.a5)*x+(1-torch.sigmoid(self.a5))*out5)+torch.sigmoid(self.b6)*(torch.sigmoid(self.a6)*x+(1-torch.sigmoid(self.a6))*out6)+torch.sigmoid(self.b7)*(torch.sigmoid(self.a7)*x+(1-torch.sigmoid(self.a7))*out7)+torch.sigmoid(self.b8)*(torch.sigmoid(self.a8)*x+(1-torch.sigmoid(self.a8))*out8)+torch.sigmoid(self.b9)*(torch.sigmoid(self.a9)*x+(1-torch.sigmoid(self.a9))*out9)+torch.sigmoid(self.b10)*(torch.sigmoid(self.a10)*x+(1-torch.sigmoid(self.a10))*out10)+torch.sigmoid(self.b11)*(torch.sigmoid(self.a11)*x+(1-torch.sigmoid(self.a11))*out11)+torch.sigmoid(self.b12)*(torch.sigmoid(self.a12)*x+(1-torch.sigmoid(self.a12))*out12)
         x= (x-self.mean)/self.std
         
         return x

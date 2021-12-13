@@ -66,14 +66,15 @@ class Trainer:
         """
         output, loss, loss_dict = model.module.forward_train(meta)
         loss = loss.mean()
+#        print(model.module.backbone)
         if mode == 'train':
             self.optimizer.zero_grad()
             loss.backward()
             self.optimizer.step()
-            if 'pre_stage' in model.backbone._modules:
-              print('clamp')
-              constraints=weightConstraint()
-              model.backbone._module['pre_stage'].apply(constraints)
+#            if 'pre_stage' in model.module.backbone._modules:
+#              print('clamp')
+#              constraints=weightConstraint()
+#              model.module.backbone.pre_stage.apply(constraints)
         return output, loss, loss_dict
 
     def run_epoch(self, epoch, data_loader, mode):
