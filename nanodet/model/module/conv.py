@@ -402,7 +402,7 @@ class AutoAug(nn.Module):
         out= T.adjust_brightness(x,brightness_factor=factor)
         return out
   
-    def adj_contrast(self,x,factor=0):
+    def adj_contrast(self,x,factor=2):
         out= T.adjust_contrast(x,contrast_factor=factor)
         return out
 
