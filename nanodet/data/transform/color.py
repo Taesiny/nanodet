@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import random
 import os
+import torch
+import torchvision.transforms.functional as T
 #def double_thresh(img,th_low,th_high):
 #    ind0=img<(th_low/255)
 #    ind1=img>(th_high/255)
@@ -232,6 +234,38 @@ def _normalize(img, mean, std):
     img = (img - mean) / std
     return img
 
+def blur(x):
+    out= T.gaussian_blur(x,kernel_size=(5, 5))
+    return out
+
+def sharpening(x,factor=2):
+    out= T.adjust_sharpness(x,sharpness_factor=factor)
+    return out
+
+def histo_equ(x):
+    out= T.equalize(x.to(dtype=torch.uint8))
+    return out.to(dtype=torch.float32)
+
+def adj_brightness(x,factor=0.1):
+    out= T.adjust_brightness(x,brightness_factor=factor)
+    return out
+  
+def adj_contrast(x,factor=2):
+    out= T.adjust_contrast(x,contrast_factor=factor)
+    return out
+
+def auto_contrast(x):
+    out= T.autocontrast(x)
+    return out
+
+def adj_gamma(x,factor=0.1):
+    out= T.adjust_gamma(x,gamma=factor)
+    return out
+
+def log_cor_T(x):
+    c = 255 / torch.log(1 + torch.max(x))
+    out = c * (torch.log(x + 1))
+    return out
 
 def color_aug_and_norm(meta, kwargs):
 #    if kwargs['histogramm_equalization']:
@@ -276,6 +310,54 @@ def color_aug_and_norm(meta, kwargs):
         img = random_saturation(img, *kwargs['saturation'])
     # cv2.imshow('trans', img)
     # cv2.waitKey(0)
+    
+    if 'autoaug_value' in kwargs:
+        img = torch.from_numpy(img)
+        img = img[None, :]
+        out1= blur(img)
+        out2= sharpening(img,factor=0)
+        out3= sharpening(img,factor=2)
+        out4= histo_equ(img)
+        out5= adj_brightness(img,factor=0.1)
+        out6= adj_brightness(img,factor=2)
+        out7= adj_contrast(img,factor=0.1)
+        out8= adj_contrast(img,factor=2)
+        out9= auto_contrast(img)
+        out10= adj_gamma(img,factor=0.1)
+        out11= adj_gamma(img,factor=2)
+        out12= log_cor_T(img)
+        a1= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a1']))
+        a2= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a2']))
+        a3= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a3']))
+        a4= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a4']))
+        a5= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a5']))
+        a6= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a6']))
+        a7= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a7']))
+        a8= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a8']))
+        a9= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a9']))
+        a10= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a10']))
+        a11= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a11']))
+        a12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a11']))
+
+        b0= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b0']))
+        b1= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b1']))
+        b2= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b2']))
+        b3= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b3']))
+        b4= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b4']))
+        b5= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b5']))
+        b6= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b6']))
+        b7= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b7']))
+        b8= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b8']))
+        b9= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b9']))
+        b10= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b10']))
+        b11= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b11']))
+        b12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b11']))       
+        
+        sum_b=b0+b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12
+        
+        
+        img = b0/sum_b*img+b1/sum_b*(a1*img+(1-a1)*out1)+b2/sum_b*(a2*img+(1-a2)*out2)+b3/sum_b*(a3*img+(1-a3)*out3)+b4/sum_b*(a4*img+(1-a4)*out4)+b5/sum_b*(a5*img+(1-a5)*out5)+b6/sum_b*(a6*img+(1-a6)*out6)+b7/sum_b*(a7*img+(1-a7)*out7)+b8/sum_b*(a8*img+(1-a8)*out8)+b9/sum_b*(a9*img+(1-a9)*out9)+b10/sum_b*(a10*img+(1-a10)*out10)+b11/sum_b*(a11*img+(1-a11)*out11)+b12/sum_b*(a12*img+(1-a12)*out12)
+        img=img[0].numpy()
     img = _normalize(img, *kwargs['normalize'])
     meta['img'] = img
     return meta
