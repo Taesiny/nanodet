@@ -1,0 +1,148 @@
+#Config File example
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/nanodet-m_autoaug_modmod_verify2
+model:
+  arch:
+    name: OneStageDetector
+    backbone:
+      name: ShuffleNetV2
+      model_size: 1.0x
+      out_stages: [2,3,4]
+      activation: LeakyReLU
+    fpn:
+      name: PAN
+      in_channels: [116, 232, 464]
+      out_channels: 96
+      start_level: 0
+      num_outs: 3
+    head:
+      name: NanoDetHead
+      num_classes: 1
+      input_channel: 96
+      feat_channels: 96
+      stacked_convs: 2
+      share_cls_reg: True
+      octave_base_scale: 5
+      scales_per_octave: 1
+      strides: [8, 16, 32]
+      reg_max: 7
+      norm_cfg:
+        type: BN
+      loss:
+        loss_qfl:
+          name: QualityFocalLoss
+          use_sigmoid: True
+          beta: 2.0
+          loss_weight: 1.0
+        loss_dfl:
+          name: DistributionFocalLoss
+          loss_weight: 0.25
+        loss_bbox:
+          name: GIoULoss
+          loss_weight: 2.0
+data:
+  train:
+    name: coco
+    img_path: /content/drive/MyDrive/ELG4960_Out/2/train/
+    ann_path: /content/drive/MyDrive/ELG4960_Out/2/train/annotations.json
+    input_size: [1024,96] #[w,h]
+    keep_ratio: True
+    pipeline:
+      perspective: 0.0
+      scale: [0.6, 1.4]
+      stretch: [[1, 1], [1, 1]]
+      rotation: 0
+      shear: 0
+      translate: 0.2
+      flip: 0.5
+#      brightness: 0.2
+#      contrast: [0.8, 1.2]
+#      saturation: [0.8, 1.2]
+      autoaug_value: {'a1': 0.162283256649971,
+                     'a10': 0.19424186646938324,
+                     'a11': 0.2607242465019226,
+                     'a12': -0.10616473853588104,
+                     'a2': 0.014954281970858574,
+                     'a3': 0.007555826101452112,
+                     'a4': 1.0324786901474,
+                     'a5': 0.2691320776939392,
+                     'a6': 0.11212658882141113,
+                     'a7': 0.32534122467041016,
+                     'a8': 0.21152500808238983,
+                     'a9': 0.2406000792980194,
+                     'b0': 0.23280687630176544,
+                     'b1': 0.18769627809524536,
+                     'b10': -0.0022426603827625513,
+                     'b11': 0.19961899518966675,
+                     'b12': 0.3812509775161743,
+                     'b2': 0.1610470712184906,
+                     'b3': 0.10735683143138885,
+                     'b4': -0.40047165751457214,
+                     'b5': 0.21606433391571045,
+                     'b6': 0.08650729805231094,
+                     'b7': 0.15795578062534332,
+                     'b8': 0.2353164255619049,
+                     'b9': 0.2281985729932785}
+      normalize: [[127.0], [128.0]]
+  val:
+    name: coco
+    img_path: /content/drive/MyDrive/ELG4960_Out/2/valid/
+    ann_path: /content/drive/MyDrive/ELG4960_Out/2/valid/annotations.json
+    input_size: [1024,96] #[w,h]
+    keep_ratio: True
+    pipeline:
+      autoaug_value: {'a1': 0.162283256649971,
+                     'a10': 0.19424186646938324,
+                     'a11': 0.2607242465019226,
+                     'a12': -0.10616473853588104,
+                     'a2': 0.014954281970858574,
+                     'a3': 0.007555826101452112,
+                     'a4': 1.0324786901474,
+                     'a5': 0.2691320776939392,
+                     'a6': 0.11212658882141113,
+                     'a7': 0.32534122467041016,
+                     'a8': 0.21152500808238983,
+                     'a9': 0.2406000792980194,
+                     'b0': 0.23280687630176544,
+                     'b1': 0.18769627809524536,
+                     'b10': -0.0022426603827625513,
+                     'b11': 0.19961899518966675,
+                     'b12': 0.3812509775161743,
+                     'b2': 0.1610470712184906,
+                     'b3': 0.10735683143138885,
+                     'b4': -0.40047165751457214,
+                     'b5': 0.21606433391571045,
+                     'b6': 0.08650729805231094,
+                     'b7': 0.15795578062534332,
+                     'b8': 0.2353164255619049,
+                     'b9': 0.2281985729932785}
+      normalize: [[127.0], [128.0]]
+device:
+  gpu_ids: [0]
+  workers_per_gpu: 2
+  batchsize_per_gpu: 30
+schedule:
+#  resume:
+#  load_model: YOUR_MODEL_PATH
+  optimizer:
+    name: SGD
+    lr: 0.14
+    momentum: 0.9
+    weight_decay: 0.0001
+  warmup:
+    name: linear
+    steps: 3000
+    ratio: 0.01
+  total_epochs: 500
+  lr_schedule:
+    name: MultiStepLR
+    milestones: [300,400,450,475]
+    gamma: 0.1
+  val_intervals: 20
+evaluator:
+  name: CocoDetectionEvaluator
+  save_key: mAP
+
+log:
+  interval: 20
+
+class_names: ['defect']
