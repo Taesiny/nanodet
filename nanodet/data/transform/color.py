@@ -325,7 +325,7 @@ def color_aug_and_norm(meta, kwargs):
         out9= auto_contrast(img)
         out10= adj_gamma(img,factor=0.1)
         out11= adj_gamma(img,factor=2)
-        out12= log_cor_T(img)
+#        out12= log_cor_T(img)
         a1= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a1']))
         a2= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a2']))
         a3= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a3']))
@@ -337,7 +337,7 @@ def color_aug_and_norm(meta, kwargs):
         a9= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a9']))
         a10= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a10']))
         a11= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a11']))
-        a12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a11']))
+#        a12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['a11']))
 
         b0= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b0']))
         b1= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b1']))
@@ -351,19 +351,35 @@ def color_aug_and_norm(meta, kwargs):
         b9= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b9']))
         b10= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b10']))
         b11= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b11']))
-        b12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b11']))       
+#        b12= torch.sigmoid(torch.tensor(kwargs['autoaug_value']['b11']))       
         
-        sum_b=b0+b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12
+        sum_b=b0+b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11
         
         
-        img = b0/sum_b*img+b1/sum_b*(a1*img+(1-a1)*out1)+b2/sum_b*(a2*img+(1-a2)*out2)+b3/sum_b*(a3*img+(1-a3)*out3)+b4/sum_b*(a4*img+(1-a4)*out4)+b5/sum_b*(a5*img+(1-a5)*out5)+b6/sum_b*(a6*img+(1-a6)*out6)+b7/sum_b*(a7*img+(1-a7)*out7)+b8/sum_b*(a8*img+(1-a8)*out8)+b9/sum_b*(a9*img+(1-a9)*out9)+b10/sum_b*(a10*img+(1-a10)*out10)+b11/sum_b*(a11*img+(1-a11)*out11)+b12/sum_b*(a12*img+(1-a12)*out12)
+        img = b0/sum_b*img+b1/sum_b*(a1*img+(1-a1)*out1)+b2/sum_b*(a2*img+(1-a2)*out2)+b3/sum_b*(a3*img+(1-a3)*out3)+b4/sum_b*(a4*img+(1-a4)*out4)+b5/sum_b*(a5*img+(1-a5)*out5)+b6/sum_b*(a6*img+(1-a6)*out6)+b7/sum_b*(a7*img+(1-a7)*out7)+b8/sum_b*(a8*img+(1-a8)*out8)+b9/sum_b*(a9*img+(1-a9)*out9)+b10/sum_b*(a10*img+(1-a10)*out10)+b11/sum_b*(a11*img+(1-a11)*out11)
         img=img[0].numpy()
     img = _normalize(img, *kwargs['normalize'])
     meta['img'] = img
     return meta
 
 
-#test_image = cv2.imread('Ori_image.png', cv2.IMREAD_GRAYSCALE)
+#test_image = cv2.imread('000000_10.png', cv2.IMREAD_GRAYSCALE)
+#print(test_image.shape)
+#cv2.imshow('test_image1',test_image)
+#test_image=test_image*0
+#
+#
+#from PIL import Image
+#
+#with Image.open('ADE_train_00000001.png') as io:
+#    seg = np.array(io)
+
+# Obtain the segmentation mask, bult from the RGB channels of the _seg file
+#R = seg[:,:,0];
+#G = seg[:,:,1];
+#B = seg[:,:,2];
+#ObjectClassMasks = (R/10).astype(np.int32)*256+(G.astype(np.int32))
+#ObjectClassMasks[400,340]
 #test_image=hist_eq(test_image)
 #homo_filter = HomomorphicFilter(a = 1, b = 1) # a = 0.75, b = 1.25
 #test_image = homo_filter.filter(I=test_image,filter_params=[100,2])
