@@ -368,7 +368,7 @@ class AutoAug(nn.Module):
         self.a9 = torch.nn.Parameter(torch.rand(()))
         self.a10 = torch.nn.Parameter(torch.rand(()))
         self.a11 = torch.nn.Parameter(torch.rand(()))
-        self.a12 = torch.nn.Parameter(torch.rand(()))
+#        self.a12 = torch.nn.Parameter(torch.rand(()))
         
         self.b0 = torch.nn.Parameter(torch.rand(()))
         self.b1 = torch.nn.Parameter(torch.rand(()))
@@ -382,9 +382,9 @@ class AutoAug(nn.Module):
         self.b9 = torch.nn.Parameter(torch.rand(()))
         self.b10 = torch.nn.Parameter(torch.rand(()))
         self.b11 = torch.nn.Parameter(torch.rand(()))
-        self.b12 = torch.nn.Parameter(torch.rand(()))
+#        self.b12 = torch.nn.Parameter(torch.rand(()))
 
-        self.sum_b = torch.sigmoid(self.b0)+torch.sigmoid(self.b1)+torch.sigmoid(self.b2)+torch.sigmoid(self.b3)+torch.sigmoid(self.b4)+torch.sigmoid(self.b5)+torch.sigmoid(self.b6)+torch.sigmoid(self.b7)+torch.sigmoid(self.b8)+torch.sigmoid(self.b9)+torch.sigmoid(self.b10)+torch.sigmoid(self.b11)+torch.sigmoid(self.b12)
+        self.sum_b = torch.sigmoid(self.b0)+torch.sigmoid(self.b1)+torch.sigmoid(self.b2)+torch.sigmoid(self.b3)+torch.sigmoid(self.b4)+torch.sigmoid(self.b5)+torch.sigmoid(self.b6)+torch.sigmoid(self.b7)+torch.sigmoid(self.b8)+torch.sigmoid(self.b9)+torch.sigmoid(self.b10)+torch.sigmoid(self.b11)#+torch.sigmoid(self.b12)
         
     def blur(self,x):
         out= T.gaussian_blur(x,kernel_size=(5, 5))
@@ -414,10 +414,10 @@ class AutoAug(nn.Module):
         out= T.adjust_gamma(x,gamma=factor)
         return out
     
-    def log_cor(self,x):
-        c = 255 / torch.log(1 + torch.max(x))
-        out = c * (torch.log(x + 1))
-        return out
+#    def log_cor(self,x):
+#        c = 255 / torch.log(1 + torch.max(x))
+#        out = c * (torch.log(x + 1))
+#        return out
 
     
     def forward(self, x):
