@@ -127,7 +127,7 @@ class ResNet(nn.Module):
         self.inplanes = 64
         self.out_stages = out_stages
 
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3,
+        self.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3,
                                bias=False)
         self.bn1 = nn.BatchNorm2d(64)
         self.act = act_layers(self.activation)
