@@ -7,7 +7,7 @@ from .mobilenetv2 import MobileNetV2
 from .efficientnet_lite import EfficientNetLite
 from .custom_csp import CustomCspNet
 from .repvgg import RepVGG
-from .convnext import ConvNeXT
+from .convnext import ConvNeXt
 
 
 def build_backbone(cfg):
@@ -30,7 +30,7 @@ def build_backbone(cfg):
     elif name == 'RepVGG':
         return RepVGG(**backbone_cfg)
     elif name == 'ConvNext':
-        return ConvNeXT(**backbone_cfg)
+        return ConvNeXt(**backbone_cfg)
     else:
         raise NotImplementedError
 
