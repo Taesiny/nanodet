@@ -118,7 +118,7 @@ class ResNet_1(nn.Module):
                  activation='ReLU',
                  pretrain=True
                  ):
-        super(ResNet, self).__init__()
+        super(ResNet_1, self).__init__()
         if depth not in self.resnet_spec:
             raise KeyError('invalid resnet depth {}'.format(depth))
         self.activation = activation
