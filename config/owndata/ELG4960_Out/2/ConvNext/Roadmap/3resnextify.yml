@@ -1,5 +1,6 @@
 # nanodet-EfficientNet-Lite1_416
 save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/roadmap/3resnextify
+model:
   arch:
     name: OneStageDetector
     backbone:
