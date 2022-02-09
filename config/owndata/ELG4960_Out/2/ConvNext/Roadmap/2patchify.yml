@@ -1,34 +1,32 @@
 # nanodet-EfficientNet-Lite1_416
-save_dir: /content/drive/MyDrive/workspace/nanodet_plus/owndata/ELG4960_Out/2/1_StageRatio
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/roadmap/2patchify
 model:
   arch:
     name: OneStageDetector
     backbone:
-      name: RepVGG
-      arch: A0
+      name: ResNet_2
+      depth: 50
       out_stages: [2,3,4]
-      activation: ReLU
-      last_channel: 512
-      deploy: False
+      pretrain: False
     fpn:
       name: PAN
-      in_channels: [96, 192, 512]
-      out_channels: 128
+      in_channels: [512, 1024, 2048]
+      out_channels: 96
       start_level: 0
       num_outs: 3
     head:
       name: NanoDetHead
       num_classes: 1
       conv_type: Conv
-      input_channel: 128
-      feat_channels: 128
+      input_channel: 96
+      feat_channels: 96
       stacked_convs: 2
       activation: ReLU
       share_cls_reg: True
-      octave_base_scale: 8
+      octave_base_scale: 5
       scales_per_octave: 1
       strides: [8, 16, 32]
-      reg_max: 10
+      reg_max: 7
       norm_cfg:
         type: BN
       loss:
@@ -45,31 +43,31 @@ model:
           loss_weight: 2.0
 data:
   train:
-    name: CocoDataset
-    img_path: /content/drive/MyDrive/ELG4960_Out/2/train
+    name: coco
+    img_path: /content/drive/MyDrive/ELG4960_Out/2/train/
     ann_path: /content/drive/MyDrive/ELG4960_Out/2/train/annotations.json
-    input_size: [1024,72] #[w,h]
-    keep_ratio: False
+    input_size: [1024,96] #[w,h]
+    keep_ratio: True
     pipeline:
       perspective: 0.0
       scale: [0.6, 1.4]
-      stretch: [[0.8, 1.2], [0.8, 1.2]]
+      stretch: [[1, 1], [1, 1]]
       rotation: 0
       shear: 0
       translate: 0.2
       flip: 0.5
-      brightness: 0.2
-      contrast: [0.6, 1.4]
-      saturation: [0.5, 1.2]
-      normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
+#      brightness: 0.2
+#      contrast: [0.8, 1.2]
+#      saturation: [0.8, 1.2]
+      normalize: [[127.0], [128.0]]
   val:
-    name: CocoDataset
-    img_path: /content/drive/MyDrive/ELG4960_Out/2/valid
+    name: coco
+    img_path: /content/drive/MyDrive/ELG4960_Out/2/valid/
     ann_path: /content/drive/MyDrive/ELG4960_Out/2/valid/annotations.json
-    input_size: [1024,72] #[w,h]
-    keep_ratio: False
+    input_size: [1024,96] #[w,h]
+    keep_ratio: True
     pipeline:
-      normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
+      normalize: [[127.0], [128.0]]
 device:
   gpu_ids: [0]
   workers_per_gpu: 2
@@ -84,19 +82,19 @@ schedule:
     weight_decay: 0.0001
   warmup:
     name: linear
-    steps: 500
+    steps: 3000
     ratio: 0.01
-  total_epochs: 500
+  total_epochs: 300
   lr_schedule:
     name: MultiStepLR
-    milestones: [200,300,400,450]
+    milestones: [180,230,260,285]
     gamma: 0.1
-  val_intervals: 10
+  val_intervals: 20
 evaluator:
   name: CocoDetectionEvaluator
   save_key: mAP
 
 log:
-  interval: 10
+  interval: 20
 
 class_names: ['defect']
