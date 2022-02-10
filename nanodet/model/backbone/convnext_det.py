@@ -4,9 +4,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from timm.models.layers import trunc_normal_, DropPath
 
-from mmcv_custom import load_checkpoint
-from mmdet.utils import get_root_logger
-from ..builder import BACKBONES
+# from mmcv_custom import load_checkpoint
+# from mmdet.utils import get_root_logger
+# from ..builder import BACKBONES
 
 class Block(nn.Module):
     r""" ConvNeXt Block. There are two equivalent implementations:
@@ -45,7 +45,7 @@ class Block(nn.Module):
         x = input + self.drop_path(x)
         return x
 
-@BACKBONES.register_module()
+# @BACKBONES.register_module()
 class ConvNeXt_det(nn.Module):
     r""" ConvNeXt
         A PyTorch impl of : `A ConvNet for the 2020s`  -
@@ -118,15 +118,8 @@ class ConvNeXt_det(nn.Module):
             elif isinstance(m, nn.LayerNorm):
                 nn.init.constant_(m.bias, 0)
                 nn.init.constant_(m.weight, 1.0)
+        self.apply(_init_weights)
 
-        if isinstance(pretrained, str):
-            self.apply(_init_weights)
-            logger = get_root_logger()
-            load_checkpoint(self, pretrained, strict=False, logger=logger)
-        elif pretrained is None:
-            self.apply(_init_weights)
-        else:
-            raise TypeError('pretrained must be a str or None')
 
     def forward_features(self, x):
         outs = []

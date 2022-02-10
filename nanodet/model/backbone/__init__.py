@@ -18,7 +18,7 @@ from .efficientnet_lite import EfficientNetLite
 from .custom_csp import CustomCspNet
 from .repvgg import RepVGG
 from .convnext_det import ConvNeXt_det
-from 
+from .convnext import ConvNeXt
 
 
 def build_backbone(cfg):
