@@ -3,6 +3,7 @@ from .resnet import ResNet
 from .resnet1_stageratio import ResNet_1
 from .resnet2_patchify import ResNet_2
 from .resnet3_resnextify import ResNet_3
+from .resnet4_invbottlenek import ResNet_4
 
 from .ghostnet import GhostNet
 from .shufflenetv2 import ShuffleNetV2
@@ -26,7 +27,10 @@ def build_backbone(cfg):
         return ResNet_2(**backbone_cfg)
     elif name == 'ResNet_3':
         return ResNet_3(**backbone_cfg)        
-    
+    elif name == 'ResNet_4':
+        return ResNet_4(**backbone_cfg)   
+
+        
     elif name == 'ShuffleNetV2':
         return ShuffleNetV2(**backbone_cfg)
     elif name == 'ShuffleNetV2_preprocessing':
