@@ -6,6 +6,9 @@ from .resnet3_resnextify import ResNet_3
 from .resnet4_invbottlenek import ResNet_4
 from .resnet5_kernel import ResNet_5
 from .resnet6_gelu import ResNet_6
+from .resnet7_lessact import ResNet_7
+from .resnet8_lessnorm import ResNet_8
+from .resnet9_ln import ResNet_9
 
 from .ghostnet import GhostNet
 from .shufflenetv2 import ShuffleNetV2
@@ -14,7 +17,8 @@ from .mobilenetv2 import MobileNetV2
 from .efficientnet_lite import EfficientNetLite
 from .custom_csp import CustomCspNet
 from .repvgg import RepVGG
-from .convnext import ConvNeXt
+from .convnext_det import ConvNeXt_det
+from 
 
 
 def build_backbone(cfg):
@@ -35,6 +39,12 @@ def build_backbone(cfg):
         return ResNet_5(**backbone_cfg)        
     elif name == 'ResNet_6':
         return ResNet_6(**backbone_cfg) 
+    elif name == 'ResNet_7':
+        return ResNet_7(**backbone_cfg)   
+    elif name == 'ResNet_8':
+        return ResNet_8(**backbone_cfg)        
+    elif name == 'ResNet_9':
+        return ResNet_9(**backbone_cfg) 
         
     elif name == 'ShuffleNetV2':
         return ShuffleNetV2(**backbone_cfg)
@@ -52,6 +62,8 @@ def build_backbone(cfg):
         return RepVGG(**backbone_cfg)
     elif name == 'ConvNext':
         return ConvNeXt(**backbone_cfg)
+    elif name == 'ConvNext_det':
+        return ConvNeXt_det(**backbone_cfg)
     else:
         raise NotImplementedError
 
