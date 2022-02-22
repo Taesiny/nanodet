@@ -10,6 +10,10 @@ from .resnet7_lessact import ResNet_7
 from .resnet8_lessnorm import ResNet_8
 from .resnet9_ln import ResNet_9
 
+from .resnet_cust_1_resnextify import ResNet_cus_1
+from .resnet_cust_2_lessnorm import ResNet_cus_2
+from .resnet_cust_3_ln import ResNet_cus_3
+
 from .ghostnet import GhostNet
 from .shufflenetv2 import ShuffleNetV2
 from .shufflenetv2_preprocessing import ShuffleNetV2_preprocessing
@@ -44,7 +48,14 @@ def build_backbone(cfg):
     elif name == 'ResNet_8':
         return ResNet_8(**backbone_cfg)        
     elif name == 'ResNet_9':
-        return ResNet_9(**backbone_cfg) 
+        return ResNet_9(**backbone_cfg)
+        
+    elif name == 'ResNet_cus_1':
+        return ResNet_cus_1(**backbone_cfg)
+    elif name == 'ResNet_cus_2':
+        return ResNet_cus_2(**backbone_cfg) 
+    elif name == 'ResNet_cus_3':
+        return ResNet_cus_3(**backbone_cfg) 
         
     elif name == 'ShuffleNetV2':
         return ShuffleNetV2(**backbone_cfg)
