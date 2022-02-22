@@ -1,10 +1,10 @@
 # nanodet-EfficientNet-Lite1_416
-save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/customized/3ln
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/customized/1resnextify1
 model:
   arch:
     name: OneStageDetector
     backbone:
-      name: ResNet_cus_3
+      name: ResNet_cus_1
       depth: 50
       out_stages: [2,3,4]
       pretrain: False

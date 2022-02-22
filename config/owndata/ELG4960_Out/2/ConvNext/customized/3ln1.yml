@@ -1,5 +1,5 @@
 # nanodet-EfficientNet-Lite1_416
-save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/customized/3ln
+save_dir: /content/drive/MyDrive/workspace/owndata/ELG4960_Out/2/ConvNext/customized/3ln1
 model:
   arch:
     name: OneStageDetector
